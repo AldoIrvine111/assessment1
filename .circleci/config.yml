@@ -49,13 +49,12 @@ jobs:
           name: Test code coverage
           command: | 
             cd src
+            mkdir coverage
             npm run test-coverage
             ls
-          environment:
-            MOCHA_FILE: test-coverage-result.xml
-          when: always
       - store_artifacts:
-          path: src/test-coverage-result.xml
+          path: src/coverage/lcov.info
+          prefix: tests 
 
 workflows:
   version: 2
