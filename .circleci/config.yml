@@ -42,7 +42,7 @@ jobs:
             npm run test-lint
           when: always
       - store_artifacts:
-          path: src/junit/lint-test-results.xml
+          path: lint-test-results.xml
 
 workflows:
   version: 2
