@@ -51,7 +51,7 @@ jobs:
             cd src
             npm run test-coverage
       - store_artifacts:
-          path: src/report.info
+          path: src/coverage/lcov.info
 
 workflows:
   version: 2
