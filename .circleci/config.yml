@@ -14,7 +14,7 @@ commands:
           command: |
             cd src 
             mkdir junit
-            pwd
+            ls
 
 
 jobs:
