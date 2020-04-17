@@ -14,15 +14,27 @@ commands:
           command: |
             cd src 
             mkdir junit
-            pwd
-
-
+            ls
 jobs:
   build:
     docker:
       - image: circleci/node:lts
     steps:
       - checkout
+      - install_deps
+      - makedir
+      - run:
+          name: unit testing
+          command: |
+            cd src
+            npm run test-unit
+          environment:
+            MOCHA_FILE: junit/test-results.xml
+          when: always
+      - store_test_results:
+          path: src/junit
+      - store_artifacts:
+          path: src/junit
 
 workflows:
   version: 2
