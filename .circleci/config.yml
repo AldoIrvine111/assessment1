@@ -1,9 +1,26 @@
 version: 2.1
+commands: 
+  install_deps:
+    steps:
+      - run:
+          name: Install dependencies
+          command: |
+            cd src
+            npm install
+  makedir:
+    steps:
+      - run:
+          name: Make Directory for Output
+          command: |
+            cd src 
+            mkdir junit
+            pwd
+
+
 jobs:
   build:
     docker:
       - image: circleci/node:lts
-
     steps:
       - checkout
 
