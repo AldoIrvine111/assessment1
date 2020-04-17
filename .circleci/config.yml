@@ -40,9 +40,11 @@ jobs:
           command: |
             cd src
             npm run test-lint
+          environment:
+            MOCHA_FILE: lint-test-results.xml
           when: always
       - store_artifacts:
-          path: ./lint-test-results.xml
+          path: src
 
 workflows:
   version: 2
