@@ -50,6 +50,7 @@ jobs:
           command: | 
             cd src
             npm run test-coverage
+            ls
           environment:
             MOCHA_FILE: test-coverage-result.xml
           when: always
