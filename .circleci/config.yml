@@ -23,6 +23,20 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
+      - install_deps
+      - makedir
+      - run:
+          name: unit testing
+          command: |
+            cd ..
+            npm run test
+          environment:
+            MOCHA_FILE: junit/unit-test-results.xml
+          when: always
+      - store_test_results:
+          path: src/junit
+      - store_artifacts:
+          path: src/junit
 
 workflows:
   version: 2
