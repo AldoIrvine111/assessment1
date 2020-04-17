@@ -55,8 +55,26 @@ jobs:
       - store_artifacts:
           path: src/coverage/lcov.info
 
+  packaging:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Packing artifacts
+          command:  |
+            cd src
+            npm pack
+      - store_artifacts:
+          path: src/rmit-app-0.0.0.tgz
+
+
 workflows:
   version: 2
   build-test-package:
     jobs:
       - build
+      - packaging:
+          required: 
+            - build
