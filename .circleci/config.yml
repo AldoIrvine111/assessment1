@@ -28,7 +28,7 @@ jobs:
       - run:
           name: unit testing
           command: |
-            cd ..
+            cd src
             npm run test
           environment:
             MOCHA_FILE: junit/unit-test-results.xml
