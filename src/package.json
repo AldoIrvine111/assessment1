@@ -6,8 +6,7 @@
     "start": "cross-env DEBUG=express-sequelize node ./bin/www",
     "start:prod": "cross-env NODE_ENV=production DEBUG=express-sequelize node ./bin/www",
     "test-lint": "",
-    "test-unit": "cross-env NODE_ENV=unit mocha test/unit --reporter mocha-junit-reporter --reporter-options mochaFile=./junit/test-results.xml",
-    "test": "cross-env NODE_ENV=unit",
+    "test-unit": "cross-env NODE_ENV=unit mocha test/unit --reporter mocha-junit-reporter",
     "test-coverage": "cross-env NODE_ENV=unit nyc report",
     "test-integration": "cross-env DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian DB_HOSTNAME=localhost NODE_ENV=integration ",
     "test-e2e": "cross-env NODE_ENV=e2e DB_USERNAME=postgres DB_PASSWORD=password DB_NAME=servian"
@@ -21,11 +20,11 @@
     "morgan": "^1.7.0",
     "pg": "^6.1.0",
     "pug": "^2.0.0-rc.4",
+    "qawolf": "^0.13.2",
     "sequelize": "^3.23.6",
     "sequelize-cli": "^3.1.0",
-    "serve-favicon": "~2.3.0",
-    "sqlite3": "^4.1.1",
-    "qawolf": "^0.9.2"
+    "serve-favicon": "^2.5.0",
+    "sqlite3": "^4.1.1"
   },
   "devDependencies": {
     "cross-env": "^3.1.3",
