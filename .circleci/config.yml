@@ -31,7 +31,7 @@ jobs:
             cd src
             npm run test
           environment:
-            MOCHA_FILE: junit/unit-test-results.xml
+            MOCHA_FILE: junit/test-results.xml
           when: always
       - store_test_results:
           path: src/junit
