@@ -44,7 +44,7 @@ jobs:
             MOCHA_FILE: lint-test-results.xml
           when: always
       - store_artifacts:
-          path: src
+          path: src/lint-test-results.xml
 
 workflows:
   version: 2
