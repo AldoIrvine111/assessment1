@@ -76,5 +76,5 @@ workflows:
     jobs:
       - build
       - packaging:
-          required: 
+          requires:
             - build
