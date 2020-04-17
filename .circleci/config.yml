@@ -49,7 +49,9 @@ jobs:
           name: Test code coverage
           command: | 
             cd src
+            mkdir coverage
             npm run test-coverage
+          when: always
       - store_artifacts:
           path: src/coverage/lcov.info
 
