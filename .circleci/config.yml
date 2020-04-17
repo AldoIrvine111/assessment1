@@ -51,11 +51,14 @@ jobs:
             cd src
             mkdir coverage
             npm run test-coverage
-            cd coverage 
-            ls
       - store_artifacts:
           path: src/coverage/lcov.info
-          prefix: tests 
+      - run:
+          name: check coverage Directory
+          command: |
+            cd src
+            cd coverage
+            ls
 
 workflows:
   version: 2
