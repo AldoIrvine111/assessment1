@@ -45,6 +45,16 @@ jobs:
           when: always
       - store_artifacts:
           path: src/lint-test-results.xml
+      - run:
+          name: Test code coverage
+          command: | 
+            cd src
+            npm run test-coverage
+          environment:
+            MOCHA_FILE: test-coverage-result.xml
+          when: always
+      - store_artifacts:
+          path: src/test-coverage-result.xml
 
 workflows:
   version: 2
