@@ -95,3 +95,4 @@ workflows:
       - packaging:
           requires:
             - build
+      - test-integration
