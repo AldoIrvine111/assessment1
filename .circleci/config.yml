@@ -70,7 +70,7 @@ jobs:
   test-integration:
     docker:
       - image: circleci/node:lts
-      - image: circleci/postgres:lates
+      - image: circleci/postgres:latest
         environment:
           POSTGRES_DB: servian
           POSTGRES_PASSWORD: password
