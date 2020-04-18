@@ -79,9 +79,15 @@ jobs:
       - checkout
       - install_deps
       - run:
+          name: migrateDB
+          command: |
+            cd src
+            node_modules/.bin/sequelize db:migrate 
+      - run:
           name: Integration test
           command: |
             cd src
+            mkdir junit
             npm run test-integration
 
 workflows:
