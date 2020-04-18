@@ -24,7 +24,7 @@ jobs:
       - install_deps
       - makedir
       - run:
-          name: unit testing
+          name: Unit testing
           command: |
             cd src
             npm run test-unit
@@ -35,6 +35,16 @@ jobs:
           path: src/junit
       - store_artifacts:
           path: src/junit
+      - run:
+          name: Lint testing
+          command: |
+            cd src
+            npm run test-lint
+          environment:
+            MOCHA_FILE: lint-test-results.xml
+          when: always
+      - store_artifacts:
+          path: src/lint-test-results.xml
 
 workflows:
   version: 2
