@@ -1,5 +1,5 @@
 version: 2.1
-commands: 
+commands:
   install_deps:
     steps:
       - run:
@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - install_deps
-      - run: 
+      - run:
           #Unit testing
           name: Unit testing
           command: |
@@ -44,7 +44,7 @@ jobs:
       - run:
           #Test coverage
           name: Test code coverage
-          command: | 
+          command: |
             cd src
             mkdir coverage
             npm run test-coverage
@@ -56,17 +56,18 @@ jobs:
   packaging:
     docker:
       - image: circleci/node:lts
+        environment:
+          - NODE_ENV: production
     steps:
       - checkout
       - install_deps
       - run:
           name: Packing artifacts
-          command:  |
+          command: |
             cd src
             npm pack
       - store_artifacts:
-          path: src/rmit-app-0.0.0.tgz    
-
+          path: src/rmit-app-0.0.0.tgz
 
   test-integration:
     docker:
@@ -85,13 +86,11 @@ jobs:
             cd src
             mkdir integrationtest
             npm run test-integration
-          when: always 
+          when: always
       - store_test_results:
           path: src/integrationtest
       - store_artifacts:
           path: src/integrationtest
-          
-          
 
 workflows:
   version: 2
