@@ -7,14 +7,8 @@ commands:
           command: |
             cd src
             npm install
-  makedir:
-    steps:
-      - run:
-          name: Make Directory for Output
-          command: |
-            cd src 
-            mkdir junit
-            ls
+
+#Make a job 'build' with unit testing, lint test and test coverage that store it as artifacts.
 jobs:
   build:
     docker:
@@ -22,11 +16,12 @@ jobs:
     steps:
       - checkout
       - install_deps
-      - makedir
-      - run:
+      - run: 
+          #Unit testing
           name: Unit testing
           command: |
             cd src
+            mkdir junit
             npm run test-unit
           environment:
             MOCHA_FILE: junit/test-results.xml
@@ -36,16 +31,18 @@ jobs:
       - store_artifacts:
           path: src/junit
       - run:
+          #Lint test
           name: Lint testing
           command: |
             cd src
             npm run test-lint
           environment:
-            MOCHA_FILE: lint-test-results.xml
+            MOCHA_FILE: eslint.xml
           when: always
       - store_artifacts:
-          path: src/lint-test-results.xml
+          path: src/eslint.xml
       - run:
+          #Test coverage
           name: Test code coverage
           command: | 
             cd src
@@ -54,9 +51,54 @@ jobs:
           when: always
       - store_artifacts:
           path: src/coverage/lcov.info
+          #Pack artifacts
+
+  packaging:
+    docker:
+      - image: circleci/node:lts
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Packing artifacts
+          command:  |
+            cd src
+            npm pack
+      - store_artifacts:
+          path: src/rmit-app-0.0.0.tgz    
+
+
+  test-integration:
+    docker:
+      - image: circleci/node:lts
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_DB: servian
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
+    steps:
+      - checkout
+      - install_deps
+      - run:
+          name: Integration test
+          command: |
+            cd src
+            mkdir integrationtest
+            npm run test-integration
+          when: always 
+      - store_test_results:
+          path: src/integrationtest
+      - store_artifacts:
+          path: src/integrationtest
+          
+          
 
 workflows:
   version: 2
   build-test-package:
     jobs:
       - build
+      - packaging
+      - test-integration:
+          requires:
+            - build
