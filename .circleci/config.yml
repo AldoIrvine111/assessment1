@@ -7,14 +7,6 @@ commands:
           command: |
             cd src
             npm install
-  makedir:
-    steps:
-      - run:
-          name: Make Directory for Output
-          command: |
-            cd src 
-            mkdir junit
-            ls
 
 #Make a job 'build' with unit testing, lint test and test coverage that store it as artifacts.
 jobs:
@@ -24,12 +16,12 @@ jobs:
     steps:
       - checkout
       - install_deps
-      - makedir
       - run: 
           #Unit testing
           name: Unit testing
           command: |
             cd src
+            mkdir junit
             npm run test-unit
           environment:
             MOCHA_FILE: junit/test-results.xml
@@ -78,6 +70,11 @@ jobs:
   test-integration:
     docker:
       - image: circleci/node:lts
+      - image: circleci/postgres:lates
+        environment:
+          POSTGRES_DB: servian
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
     steps:
       - checkout
       - install_deps
@@ -95,4 +92,6 @@ workflows:
       - packaging:
           requires:
             - build
-      - test-integration
+      - test-integration:
+          requires:
+            - build
