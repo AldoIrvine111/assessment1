@@ -66,6 +66,8 @@ jobs:
             npm pack
       - store_artifacts:
           path: src/rmit-app-0.0.0.tgz
+      - store_test_results:
+          path: src
 
   test-integration:
     docker:
@@ -83,7 +85,6 @@ jobs:
           command: |
             cd src
             mkdir junit
-            ls
             npm run test-integration
           
 
