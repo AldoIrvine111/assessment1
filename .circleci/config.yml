@@ -80,7 +80,7 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - intsall_deps
+      - install_deps
       - run:
           name: Integration test
           command: |
