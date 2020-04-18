@@ -88,6 +88,7 @@ jobs:
           command: |
             cd src
             mkdir junit
+            ls
             npm run test-integration
           
 
