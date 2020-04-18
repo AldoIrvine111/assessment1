@@ -58,8 +58,6 @@ jobs:
             npm pack
       - store_artifacts:
           path: src/rmit-app-0.0.0.tgz
-      - store_test_results:
-          path: src
 
 #Make a packaging job to pack artifacts and store it
 
