@@ -89,6 +89,13 @@ jobs:
             cd src
             mkdir junit
             npm run test-integration
+          environment:
+            MOCHA_FILE: junit/integration-result.xml
+          when: always
+      - store_test_results:
+          path: src/junit
+      - store_artifacts:
+          path: src/junit
 
 workflows:
   version: 2
