@@ -45,6 +45,15 @@ jobs:
           when: always
       - store_artifacts:
           path: src/lint-test-results.xml
+      - run:
+          name: Test code coverage
+          command: | 
+            cd src
+            mkdir coverage
+            npm run test-coverage
+          when: always
+      - store_artifacts:
+          path: src/coverage/lcov.info
 
 workflows:
   version: 2
