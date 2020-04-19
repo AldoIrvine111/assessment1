@@ -102,3 +102,4 @@ workflows:
       - build
       - packaging
       - test-integration
+      - test e2e
