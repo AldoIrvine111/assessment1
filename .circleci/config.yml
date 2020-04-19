@@ -120,17 +120,24 @@ jobs:
             npm run test-e2e            
           environment:
             QAW_HEADLESS: "TRUE"
-            QAW_ARTIFACT_PATH: /tmp/artifact
+            QAW_ARTIFACT_PATH: src/.qawolf
       - store_artifacts:
-          path: /tmp/artifact
+          path: src/.qawolf
 
 workflows:
   version: 2
   build-test-package:
     jobs:
       - build
-      - packaging
-      - test-integration
+      - test-integration:
+          requires:
+            - build
       - test-e2e:
           requires:
             - test-integration
+      - packaging:
+          requires:
+            - test-e2e
+          filters:
+            branches:
+              only: master
