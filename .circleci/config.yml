@@ -106,7 +106,7 @@ jobs:
       - install_deps
       - run:
           name: Start server on backgorund
-          command:
+          command: |
             cd src
             npm run start:prod&
             npx wait-on http://localhost:3000
