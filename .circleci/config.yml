@@ -1,6 +1,6 @@
 version: 2.1
 commands:
-  install_deps:
+  install-depend:
     steps:
       - run:
           name: Install dependencies
@@ -15,7 +15,7 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           #Unit testing
           name: Unit testing
@@ -53,14 +53,15 @@ jobs:
           path: src/coverage/lcov.info
           #Pack artifacts
 
+  #Create job packaging to package artifacts
   packaging:
     docker:
       - image: circleci/node:lts
         environment:
-          - NODE_ENV: production
+          NODE_ENV: production
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           name: Packing artifacts
           command: |
@@ -69,17 +70,18 @@ jobs:
       - store_artifacts:
           path: src/rmit-app-0.0.0.tgz
 
+  #Create integration test job
   test-integration:
     docker:
       - image: circleci/node:lts
       - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_DB: servian
-          POSTGRES_PASSWORD: password
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           name: Integration test
           command: |
@@ -92,12 +94,42 @@ jobs:
       - store_artifacts:
           path: src/integrationtest
 
+  test-e2e:
+    docker:
+      - image: circleci/node:lts-browsers
+        environment:
+          PGUSER: postgres
+          PGHOST: localhost
+          NODE_ENV: e2e
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: servian
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - install-depend            
+      - run:
+          name: Run background server
+          command: |
+            cd src
+            node_modules/.bin/sequelize db:migrate
+            npm run start:prod&
+            npx wait-on http://localhost:3000
+            npm run test-e2e            
+          environment:
+            QAW_HEADLESS: "TRUE"
+            QAW_ARTIFACT_PATH: /tmp/artifact
+      - store_artifacts:
+          path: /tmp/artifact
+
 workflows:
   version: 2
   build-test-package:
     jobs:
       - build
       - packaging
-      - test-integration:
+      - test-integration
+      - test-e2e:
           requires:
-            - build
+            - test-integration
