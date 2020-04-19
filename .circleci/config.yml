@@ -130,6 +130,6 @@ workflows:
       - build
       - packaging
       - test-integration
-      - test e2e:
+      - test-e2e:
           requires:
             - test-integration   
