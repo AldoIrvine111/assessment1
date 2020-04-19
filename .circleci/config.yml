@@ -96,7 +96,7 @@ jobs:
 
   test-e2e:
     docker:
-      - image: circleci/node:buster-browsers-legacy
+      - image: circleci/node:lts-browsers
         environment:
           PGUSER: postgres
           PGHOST: localhost
