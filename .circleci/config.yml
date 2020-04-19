@@ -1,6 +1,6 @@
 version: 2.1
 commands:
-  install_deps:
+  install-depend:
     steps:
       - run:
           name: Install dependencies
@@ -15,7 +15,7 @@ jobs:
       - image: circleci/node:lts
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           #Unit testing
           name: Unit testing
@@ -61,7 +61,7 @@ jobs:
           NODE_ENV: production
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           name: Packing artifacts
           command: |
@@ -81,7 +81,7 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run:
           name: Integration test
           command: |
@@ -96,7 +96,7 @@ jobs:
 
   test-e2e:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:jessie-browsers
         environment:
           PGUSER: postgres
           PGHOST: localhost
@@ -108,7 +108,7 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - install_deps
+      - install-depend
       - run: sudo apt install -y postgresql-client || true
       - run:
           name: migrateDB
