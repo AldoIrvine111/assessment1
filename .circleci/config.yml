@@ -96,10 +96,11 @@ jobs:
 
   test-e2e:
     docker:
-      - image: circleci/node:lts-browsers
+      - image: circleci/node:buster-browsers-legacy
         environment:
           PGUSER: postgres
           PGHOST: localhost
+          NODE_ENV: e2e
       - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_USER: postgres
@@ -118,9 +119,9 @@ jobs:
             npm run test-e2e            
           environment:
             QAW_HEADLESS: "TRUE"
-            QAW_ARTIFACT_PATH: src/.qawolf
+            QAW_ARTIFACT_PATH: /tmp/artifact
       - store_artifacts:
-          path: src/.qawolf
+          path: /tmp/artifact
 
 workflows:
   version: 2
