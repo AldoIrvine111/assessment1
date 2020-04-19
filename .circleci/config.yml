@@ -129,6 +129,7 @@ workflows:
     jobs:
       - build
       - packaging
-      - test-integration:
+      - test-integration
+      - test e2e:
           requires:
-            - build
+            - test-integration   
