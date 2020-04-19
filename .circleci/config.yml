@@ -102,25 +102,25 @@ jobs:
           POSTGRES_DB: servian
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-    steps:
-      - checkout
-      - install_deps
-      - run: 
-          name: Start Server on Background
-          command: |
-           cd src
-           npm run start:prod &
-           npx wait-on http://localhost:3000
-      - run:
-          name: Test e2e
-          command: |
-           cd src
-           npm run test-e2e
-          environment:
-            QAW_HEADLESS: "TRUE"
-            QAW_ARTIFACT_PATH: /tmp/artifacts
-      - store_artifacts:
-          path: /tmp/artifacts
+    #steps:
+     # - checkout
+     # - install_deps
+     # - run: 
+     #     name: Start Server on Background
+      #    command: |
+      #     cd src
+      #     npm run start:prod &
+      #     npx wait-on http://localhost:3000
+      #- run:
+      #    name: Test e2e
+       #   command: |
+        #   cd src
+         #  npm run test-e2e
+         # environment:
+         #   QAW_HEADLESS: "TRUE"
+         #   QAW_ARTIFACT_PATH: /tmp/artifacts
+      #- store_artifacts:
+       #   path: /tmp/artifacts
 
 
 workflows:
