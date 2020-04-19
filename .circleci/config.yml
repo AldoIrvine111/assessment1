@@ -113,7 +113,6 @@ jobs:
           command: |
             cd src
             node_modules/.bin/sequelize db:migrate
-            
             npm run start:prod&
             npx wait-on http://localhost:3000
             npm run test-e2e            
