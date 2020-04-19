@@ -53,12 +53,12 @@ jobs:
           path: src/coverage/lcov.info
           #Pack artifacts
 
-#Create job packaging to package artifacts
+  #Create job packaging to package artifacts
   packaging:
     docker:
       - image: circleci/node:lts
         environment:
-          - NODE_ENV: production
+          NODE_ENV: production
     steps:
       - checkout
       - install_deps
@@ -70,7 +70,7 @@ jobs:
       - store_artifacts:
           path: src/rmit-app-0.0.0.tgz
 
-#Create integration test job
+  #Create integration test job
   test-integration:
     docker:
       - image: circleci/node:lts
@@ -93,36 +93,17 @@ jobs:
           path: src/integrationtest
       - store_artifacts:
           path: src/integrationtest
-          
   test-e2e:
     docker:
-      - image: circleci/node:lts-browsers
-      - image: postgres:9.6.2-alpine
+      - image: circleci/node:lts
+      - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_DB: servian
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - install_deps
-      - run: 
-          name: Start Server on Background
-          command: |
-           cd src
-           npm run start:prod &
-           npx wait-on http://localhost:3000
-      #- run:
-      #    name: Test e2e
-       #   command: |
-        #   cd src
-         #  npm run test-e2e
-         # environment:
-         #   QAW_HEADLESS: "TRUE"
-         #   QAW_ARTIFACT_PATH: /tmp/artifacts
-      #- store_artifacts:
-       #   path: /tmp/artifacts
-
-
+      - install_deps 
 workflows:
   version: 2
   build-test-package:
@@ -132,4 +113,4 @@ workflows:
       - test-integration
       - test-e2e:
           requires:
-            - test-integration   
+            - test-integration
