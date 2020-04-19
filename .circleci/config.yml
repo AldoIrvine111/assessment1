@@ -86,6 +86,7 @@ jobs:
           name: Integration test
           command: |
             cd src
+            ls
             mkdir integrationtest
             npm run test-integration
           when: always
