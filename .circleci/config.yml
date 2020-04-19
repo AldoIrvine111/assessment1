@@ -102,9 +102,9 @@ jobs:
           POSTGRES_DB: servian
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
-    #steps:
-     # - checkout
-     # - install_deps
+    steps:
+      - checkout
+      - install_deps
      # - run: 
      #     name: Start Server on Background
       #    command: |
