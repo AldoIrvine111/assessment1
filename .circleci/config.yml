@@ -113,6 +113,7 @@ jobs:
           name: migrateDB
           command: |
             cd src
+            ls
             node_modules/.bin/sequelize db:migrate
       - run:
           name: test e2e
