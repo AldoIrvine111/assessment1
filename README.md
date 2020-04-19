@@ -39,17 +39,14 @@ Code coverage is a metric that can help you understand how much of your source i
 After all the test we done, we will store files or directory as an artifact into Circle CI's artifact section with store_artifacts Artifacts persist data after a job is completed and may be used for storage of the outputs of your build process.Artifacts are stored on Amazon S3 and are protected with your CircleCI account for private projects. Artifacts will only be generated on MASTER branch hence why later on our workflow will have a require command for master branch only.
 ![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
 
-
-## Multiple Fail Scenario 
-
-
-
 ### 5. Integration Testing
 After unit testing, the next level of software testing is Integration Testing. This test will only run after unit testing pass, because this testing is where individual units are combined and tested as a group. We will once again used Mocha for integration testing. Apart from the docker image, we will now use another images to launch instances on PostgresSQL. This interaction between integrated units is tested here.
 
 
 ### 6. End to End test
 Last but not least, we will implement the end to end testing or usually known as E2E. What this test does, is to test the flow of project from the start until the end. This test will behave like a real user under certain scenarios. QaWolf will help us in performing this E2E test. 
+
+### Multiple Fail Scenario
 
 
 ### CircleCI Log 
