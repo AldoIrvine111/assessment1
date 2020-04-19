@@ -17,123 +17,40 @@ Me as an expert in DevOps field, I suggest them to :
 So, the following text will explain on how we will implement our solutions.
 
 ### Set up a private repository in GitHub and commit the application there to be built, tested, and packaged using CircleCI.
-In the first steps, we will set a PRIVATE repository in GitHub, where we will work on our project. Project is set to private to prevent unauthorized people to see or alter the project.
+In the first steps, we will set a PRIVATE repository in GitHub, where we will work on our project. Project is set to private to prevent unauthorized people to see or alter the project. We will make a branch for each feature or testing added that we will build. There will be a master code and several branches, and each team member can work on different branches at once(which is effective) and not work on the master. Once feature has passed the testing, we will merge it with our master code. 
 
 ![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
 
+## Test to be added for Continuous Integration Build
+
+### 1. Unit testing 
+Unit testing is a level of software testing where indentify simple bug. To ensure to catch this bug, unit testing will breakdown big chunks of code into smaller bits and tested it. In this project, we will cooperate unit testing using Circle CI. We need to make sure unit testing stages to pass before deploying it to public. I will use Mocha for our unit testing.
+![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
+
+### 2. Static Code Analysis / Lint
+Next, we are going to implement another test. This is linting test, it is an automated checking of source code for programmatic and stylistic errors. To answer why we should lint test, linting is implemented to reduce error and improve overall quality of code. In this case, we will use EsLint to stasically analyzes our code to find problem.
+![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
+
+### 3. Code coverage Report
+Code coverage is a metric that can help you understand how much of your source is tested. It's a very useful metric that can help you assess the quality of your test suite, and we will see here how you can get started with your projects. The reports will include percentages of statement, functions, line coverage and branches. To generate, we will nyc for mocha for our code coverage and --reporter flag for text report.
+![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
+
+### 4. Generating artifact
+After all the test we done, we will store files or directory as an artifact into Circle CI's artifact section with store_artifacts Artifacts persist data after a job is completed and may be used for storage of the outputs of your build process.Artifacts are stored on Amazon S3 and are protected with your CircleCI account for private projects. Artifacts will only be generated on MASTER branch hence why later on our workflow will have a require command for master branch only.
+![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
+
+
+## Multiple Fail Scenario 
 
 
 
-### Setting up repository 
-
-![repo images](https://github.com/gladysganda/s3679389-A1/blob/master/images/repo.JPG?raw=true)
-
-### Unit tests
-
- - Unit testing breaks codes into smaller bits that can be easily and effectively tested. Unit testing helps to identify a simple bug that might have been passed undetected. 
-
- - In this case, we are using Mocha for our unit test implementation. Tests from test/unit directory are being executed in Circle CI to check for test output. We have to make sure that all the tests passed. 
-
-### Linting
-
- - Linting helps to identify the common error, including syntax error and structural problem, and to help improve overall code quality. 
-
- - Here we are using EsLint as our lint tools. EsLint will go through everything in the directory by specifying "eslint ./" or just a specific file with "eslint /filename". There is no output in our case as eslintrc.json has "ignorePatterns" included. 
-
-### Code coverage
-
- - Code coverage provides percentages of codes that are executed when automated tests are run. Common coverage summary includes the percentages of statements, branches, functions, and lines coverage.
-
- - We are using nyc for mocha to generate our code coverage, and --reporter flag to generate the default text report.
-
-### Generating artefact
-
- - Store artifacts will upload a file or directory as an artifact. After it is successfully generated, it can be accessed from the artifacts tab in circleci. 
-
- - To pack up the application, node environment has to be set to production mode, which will install only the required dependencies. We can then do a zipping and store it as an artifact. 
-
-### Multiple Fail Scenario 
-
-![fail-scenario-1](https://github.com/gladysganda/s3679389-A1/blob/master/images/fail(1).JPG)
- - This error might be occurred to some situation, but in this case is caused by config.yml file and package.json not being in the same directory.
-
-![fail-scenario-2](https://github.com/gladysganda/s3679389-A1/blob/master/images/fail(2).JPG)
- - The most common error that might happen on yaml file is indentation error. Run "circleci config validate" to check if you have a valid indentation
-
-![fail-scenario-3](https://github.com/gladysganda/s3679389-A1/blob/master/images/fail(3).JPG)
- - The working directory is not set correctly in this case. Error is caused by config file not being able to find package.json
-
-![fail-scenario-4](https://github.com/gladysganda/s3679389-A1/blob/master/images/fail(4).JPG)
- - The error occurs because of the wrong format when using npm <command>. Instead of doing npm test-unit, the right format should be npm run test-unit
-
-![fail-scenario-5](https://github.com/gladysganda/s3679389-A1/blob/master/images/fail(5).JPG)
- - The file or directory could not be found. This case is usually caused by the wrong directory path specified, or it has not been created. 
+### 5. Integration Testing
+After unit testing, the next level of software testing is Integration Testing. This test will only run after unit testing pass, because this testing is where individual units are combined and tested as a group. We will once again used Mocha for integration testing. Apart from the docker image, we will now use another images to launch instances on PostgresSQL. This interaction between integrated units is tested here.
 
 
-### Integration tests
-
- - Integration testing is where individual units combined to be tested as a group. Integration testing is implemented after unit testing has been passed. 
-
- - Mocha is again used for integration testing. Other than docker images, postgres image is also implemented in this case as we are launching an instance on PostgreSQL to run the integration testing. 
-
-### End to end test
-
- - End to end testing is used to test whether the flow of application from the beginning to the end is behaving as expected. E2E test will simulate real user scenarios and validate the system under integration with external interfaces.
-
- - E2E tests are implemented using QaWolf. "npx qawolf init" is used to set up config of the project. Here we are using circleci/node:lts-browsers which will make testing easier as it configures the application to run in a containerized environment.
-
-Fail Scenario
-![e2e-fail-1](https://github.com/gladysganda/s3679389-A1/blob/master/images/e2e-fail(1).JPG)
- - A wrong docker image has been used. In this scenario, docker images must support the browser to be able to run e2e browser testing.
-![e2e-fail-2](https://github.com/gladysganda/s3679389-A1/blob/master/images/e2e-fail(2).JPG)
- - Prompted Database error is caused by DB Username, Name and Password not being declared.
+### 6. End to End test
+Last but not least, we will implement the end to end testing or usually known as E2E. What this test does, is to test the flow of project from the start until the end. This test will behave like a real user under certain scenarios. QaWolf will help us in performing this E2E test. 
 
 
 ### CircleCI Log 
 
-Unit Test
-
-![tess-pass](https://github.com/gladysganda/s3679389-A1/blob/master/images/unit-test-success.JPG)
-![tess-pass](https://github.com/gladysganda/s3679389-A1/blob/master/images/test-pass.JPG)
-
-Lint 
-
-![lint-success](https://github.com/gladysganda/s3679389-A1/blob/master/images/lint-success.JPG)
-
-Code Coverage
-
-![Code Coverage](https://github.com/gladysganda/s3679389-A1/blob/master/images/code-coverage-success.JPG)
-![Code Coverage](https://github.com/gladysganda/s3679389-A1/blob/master/images/artifacts.JPG)
-
-Generate Artefact
-
-![Code Coverage](https://github.com/gladysganda/s3679389-A1/blob/master/images/generate-artefact-success.JPG)
-
-The artifact should be generated on the master branch only 
-
-![Master-1](https://github.com/gladysganda/s3679389-A1/blob/master/images/master-only.JPG)
-![Master-2](https://github.com/gladysganda/s3679389-A1/blob/master/images/master-only(2).JPG)
-
-Integration Testing
-
-![Integration Testing](https://github.com/gladysganda/s3679389-A1/blob/master/images/int-test-success.JPG)
-
-
-E2E Testing
-
-![E2E](https://github.com/gladysganda/s3679389-A1/blob/master/images/e2e-test-success.JPG)
-
-
-### CircleCI Pipelines
-
-Generate Artefact
-![Pipeline-1](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(1).JPG)
-![Pipeline-2](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(2).JPG)
-![Pipeline-3](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(3).JPG)
-![Pipeline-4](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(4).JPG)
-![Pipeline-5](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(5).JPG)
-![Pipeline-6](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(6).JPG)
-![Pipeline-7](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(7).JPG)
-![Pipeline-8](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(8).JPG)
-![Pipeline-9](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(9).JPG)
-![Pipeline-10](https://github.com/gladysganda/s3679389-A1/blob/master/images/pipeline(10).JPG)
