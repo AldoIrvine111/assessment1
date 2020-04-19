@@ -86,7 +86,6 @@ jobs:
           name: Integration test
           command: |
             cd src
-            ls
             mkdir integrationtest
             npm run test-integration
           when: always
@@ -94,7 +93,41 @@ jobs:
           path: src/integrationtest
       - store_artifacts:
           path: src/integrationtest
-       
+
+  test-e2e:
+    docker:
+      - image: circleci/node:lts-browsers
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_DB: servian
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - install_deps
+      - run: sudo apt install -y postgresql-client || true
+      - run:
+          name: migrateDB
+          command: |
+            cd src
+            node_module/.bin/sequelize db:migrate
+      - run:
+          name: Run background server
+          command: |
+            cd src
+            npm run start:prod&
+            npx wait-on http://localhost:3000
+      - run:
+          name: test e2e 
+          command: |
+            cd src
+            npm run test-e2e
+          environment:
+            QAW_HEADLESS: "TRUE"
+            QAW_ARTIFACT_PATH: src/.qawolf
+      - store_artifacts:
+          path: src/.qawolf
+
 workflows:
   version: 2
   build-test-package:
@@ -102,4 +135,6 @@ workflows:
       - build
       - packaging
       - test-integration
-      - test e2e
+      - test-e2e:
+          requires:
+            - test-integration
