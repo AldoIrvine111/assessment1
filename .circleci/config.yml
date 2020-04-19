@@ -95,7 +95,11 @@ jobs:
           path: src/integrationtest
   test-e2e:
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:buster-browsers-legacy
+        environment:
+          PGHOST: localhost
+          PGUSER: postgres
+          NODE_ENV: e2e
       - image: circleci/postgres:9.6.2-alpine
         environment:
           POSTGRES_DB: servian
@@ -105,6 +109,11 @@ jobs:
       - checkout
       - install_deps
       - run: sudo apt install -y postgresql-client || true 
+      - run:
+          name: migrateDB
+          command: |
+            cd src
+            node_modules/.bin/sequelize db:migrate
       - run:
           name: test e2e
           command: |
