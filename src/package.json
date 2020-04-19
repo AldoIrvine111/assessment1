@@ -19,6 +19,7 @@
     "express": "^4.16.2",
     "morgan": "^1.7.0",
     "pg": "^6.1.0",
+    "playwright-core": "^0.13.0",
     "pug": "^2.0.0-rc.4",
     "qawolf": "^0.13.2",
     "sequelize": "^3.23.6",
