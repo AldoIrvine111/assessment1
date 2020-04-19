@@ -107,11 +107,6 @@ jobs:
       - install_deps
       - run: sudo apt install -y postgresql-client || true
       - run:
-          name: migrateDB
-          command: |
-            cd src
-            node_module/.bin/sequelize db:migrate
-      - run:
           name: Run background server
           command: |
             cd src
