@@ -19,6 +19,7 @@ So, the following text will explain on how we will implement our solutions.
 ### Set up a private repository in GitHub and commit the application there to be built, tested, and packaged using CircleCI.
 In the first steps, we will set a PRIVATE repository in GitHub, where we will work on our project. Project is set to private to prevent unauthorized people to see or alter the project.
 
+![repo images](https://github.com/AldoIrvine111/assessment1/blob/master/pic/create_repo.PNG)
 
 
 
