@@ -103,7 +103,24 @@ jobs:
           POSTGRES_PASSWORD: password
     steps:
       - checkout
-      - install_deps 
+      - install_deps
+      - run:
+          name: Start server on backgorund
+          command:
+            cd src
+            npm run start:prod&
+            npx wait-on http://localhost:3000
+      - run:
+          name: Test e2e
+          command: |
+            cd src
+            npm run test-e2e
+          environment:
+            QAW_HEADLESS: "TRUE"
+            QAW_ARTIFACT_PATH: src/.qawolf
+      - store_artifacts:
+          path: src/.qawolf
+        
 workflows:
   version: 2
   build-test-package:
