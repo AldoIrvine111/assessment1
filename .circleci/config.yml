@@ -104,6 +104,7 @@ jobs:
     steps:
       - checkout
       - install_deps
+      - run: sudo apt install -y postgresql-client || true 
       - run:
           name: test e2e
           command: |
