@@ -93,8 +93,8 @@ jobs:
           path: src/integrationtest
       - store_artifacts:
           path: src/integrationtest
-
- test-e2e:
+          
+  test-e2e:
     docker:
       - image: circleci/node:lts-browsers
       - image: circleci/node:postgres:9.6.2-alpine
@@ -108,11 +108,13 @@ jobs:
       - run: 
           name: Start Server on Background
           command: |
+           cd src
            npm run start:prod &
            npx wait-on http://localhost:3000
       - run:
           name: Test e2e
           command: |
+           cd src
            npm run test-e2e
           environment:
             QAW_HEADLESS: "TRUE"
