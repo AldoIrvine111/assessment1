@@ -104,6 +104,19 @@ jobs:
     steps:
       - checkout
       - install_deps
+      - run:
+          name: test e2e
+          command: |
+            cd src
+            npm run start:prod & 
+            npx wait-on http://localhost:3000
+            npm run test-e2e
+          environment:
+            QAW_HEADLESS: "TRUE"
+            QAW_ARTIFACT_PATH: src/,qawolf
+      - store_artifacts:
+          path: src/.qawolf
+      
 
         
 workflows:
